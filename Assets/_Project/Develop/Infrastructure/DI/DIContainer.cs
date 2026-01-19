@@ -28,7 +28,7 @@ namespace Assets._Project.Develop.Infrastructure.DI
         public T Resolve<T>()
         {
             if (_requests.Contains(typeof(T)))
-                new InvalidOperationException($"Cycle resolve {typeof(T)}");
+                throw new InvalidOperationException($"Cycle resolve {typeof(T)}");
 
             _requests.Add(typeof(T));
 
