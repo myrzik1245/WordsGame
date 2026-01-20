@@ -2,7 +2,7 @@ using System;
 
 namespace Assets._Project.Develop.Infrastructure.DI
 {
-    public class Registration
+    public class Registration : IRegistrationOptions
     {
         private Func<DIContainer, object> _creator;
         private object _instance;
@@ -26,9 +26,11 @@ namespace Assets._Project.Develop.Infrastructure.DI
             return _instance;
         }
 
-        public void AsSingle()
+        public IRegistrationOptions AsSingle()
         {
             _asSingle = true;
+
+            return this;
         }
     }
 }

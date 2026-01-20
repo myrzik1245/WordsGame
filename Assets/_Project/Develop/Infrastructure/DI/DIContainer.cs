@@ -14,10 +14,14 @@ namespace Assets._Project.Develop.Infrastructure.DI
             _parantContainer = parantContainer;
         }
 
-        public Registration Register<T>(Func<DIContainer, T> creator)
+        public IRegistrationOptions Register<T>(Func<DIContainer, T> creator)
         {
             if (_container.ContainsKey(typeof(T)))
+            {
+                if (_parantContainer != null && _parantContainer._container.ContainsKey(typeof(T)))
+
                 throw new InvalidOperationException($"container already contains {typeof(T)}");
+            }
 
             Registration registration = new Registration(container => creator.Invoke(container));
             _container.Add(typeof(T), registration);

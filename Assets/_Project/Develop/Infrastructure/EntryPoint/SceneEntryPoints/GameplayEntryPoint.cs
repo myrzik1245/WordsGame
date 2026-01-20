@@ -21,10 +21,7 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
 
             GameplayRegistrations.Register(_container, gameplaySceneArgs);
 
-            _game = new Game(
-                container.Resolve<IGameRules>(),
-                container.Resolve<WinScreen>(),
-                container.Resolve<LoseScreen>());
+            _game = container.Resolve<Game>();
 
             yield break;
         }

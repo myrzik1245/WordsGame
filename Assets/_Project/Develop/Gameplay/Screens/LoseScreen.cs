@@ -1,28 +1,19 @@
-using Assets._Project.Develop.Utility.CoroutinePerformer;
-using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
+using System;
 
 public class LoseScreen : Screen
 {
-    private IInputService _inputService;
-    private ICoroutinePerformer _coroutinePerformer;
-    private LoadSceneService _loadSceneService;
-    private GameplayInputArgs _gameplayInputArgs;
+    public override event Action<string> ChangeSceneReauested;
 
-    public void Initialize(
-        IInputService inputService,
-        ICoroutinePerformer coroutinePerformer,
-        LoadSceneService loadSceneService,
-        GameplayInputArgs gameplayInputArgs)
+    private IInputService _inputService;
+
+    public void Initialize(IInputService inputService)
     {
         _inputService = inputService;
-        _coroutinePerformer = coroutinePerformer;
-        _loadSceneService = loadSceneService;
-        _gameplayInputArgs = gameplayInputArgs;
     }
 
     private void Update()
     {
         if (_inputService.Continue.Down)
-            _coroutinePerformer.StartPerform(_loadSceneService.LoadAsync(Scenes.Gameplay, _gameplayInputArgs));
+            ChangeSceneReauested?.Invoke(Scenes.Gameplay);
     }
 }

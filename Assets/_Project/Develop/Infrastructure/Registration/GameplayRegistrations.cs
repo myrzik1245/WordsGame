@@ -13,6 +13,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
 
         public static void Register(DIContainer container, GameplayInputArgs inputArgs)
         {
+            container.Register(CreateGame).AsSingle();
             container.Register(CreateLoseScreen).AsSingle();
             container.Register(CreateWinScreen).AsSingle();
             container.Register(CreateSymbolInputReader).AsSingle();
@@ -23,6 +24,17 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             _inputArgs = inputArgs;
         }
 
+        private static Game CreateGame(DIContainer container)
+        {
+             return new Game(
+                container.Resolve<IGameRules>(),
+                container.Resolve<WinScreen>(),
+                container.Resolve<LoseScreen>(),
+                container.Resolve<ICoroutinePerformer>(),
+                container.Resolve<LoadSceneService>(),
+                _inputArgs);
+        }
+
         private static LoseScreen CreateLoseScreen(DIContainer container)
         {
             ResourcesLoader resourceLoader = container.Resolve<ResourcesLoader>();
@@ -31,10 +43,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             LoseScreen instance = GameObject.Instantiate(winScreenPrefab);
 
             instance.Initialize(
-                container.Resolve<IInputService>(),
-                container.Resolve<ICoroutinePerformer>(),
-                container.Resolve<LoadSceneService>(),
-                _inputArgs);
+                container.Resolve<IInputService>());
 
             return instance;
         }
@@ -47,9 +56,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             WinScreen instance = GameObject.Instantiate(winScreenPrefab);
 
             instance.Initialize(
-                container.Resolve<IInputService>(),
-                container.Resolve<ICoroutinePerformer>(),
-                container.Resolve<LoadSceneService>());
+                container.Resolve<IInputService>());
 
             return instance;
         }

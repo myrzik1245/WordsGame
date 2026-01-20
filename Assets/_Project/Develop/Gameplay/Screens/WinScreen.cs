@@ -1,24 +1,19 @@
-using Assets._Project.Develop.Utility.CoroutinePerformer;
+using System;
 
 public class WinScreen : Screen
 {
-    private IInputService _inputService;
-    private ICoroutinePerformer _coroutinePerformer;
-    private LoadSceneService _loadSceneService;
+    public override event Action<string> ChangeSceneReauested;
 
-    public void Initialize(
-        IInputService inputService,
-        ICoroutinePerformer coroutinePerformer,
-        LoadSceneService loadSceneService)
+    private IInputService _inputService;
+
+    public void Initialize(IInputService inputService)
     {
         _inputService = inputService;
-        _coroutinePerformer = coroutinePerformer;
-        _loadSceneService = loadSceneService;
     }
 
     private void Update()
     {
         if (_inputService.Continue.Down)
-            _coroutinePerformer.StartPerform(_loadSceneService.LoadAsync(Scenes.MainMenu));
+            ChangeSceneReauested?.Invoke(Scenes.MainMenu);
     }
 }

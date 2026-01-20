@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
-public class Screen : MonoBehaviour
+public abstract class Screen : MonoBehaviour
 {
+    public abstract event Action<string> ChangeSceneReauested;
+
     private void Awake()
     {
         Hide();
