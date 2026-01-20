@@ -1,7 +1,12 @@
 ﻿using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
+using Assets._Project.Develop.Utility.DataManagment.Keys;
+using Assets._Project.Develop.Utility.DataManagment.SaveLoadService;
+using Assets._Project.Develop.Utility.DataManagment.Serializator;
+using Assets._Project.Develop.Utility.DataManagment.Storage;
 using Assets._Project.Develop.Utility.ResourceLoader;
+using Assets._Project.Develop.Utility.WalletService;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Infrastructure.Registration
@@ -10,6 +15,8 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
+            container.Register(CreateWalletService).AsSingle();
+            container.Register(CreateSaveLoadService).AsSingle();
             container.Register(CreateTimer);
             container.Register(CreateConfigProvider).AsSingle();
             container.Register(CreateResourcesConfigsLoader).AsSingle();
@@ -18,6 +25,19 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateLoadScreen).AsSingle();
             container.Register(CreateResourceLoader).AsSingle();
             container.Register(CreateCoroutinePerformer).AsSingle();
+        }
+
+        private static Wallet CreateWalletService(DIContainer container)
+        {
+            return new Wallet();
+        }
+
+        private static ISaveLoadService CreateSaveLoadService(DIContainer container)
+        {
+            return new SaveLoadSerivce(
+                new JsonUtilitySerializator(),
+                new DataKeys(),
+                new PlayerPrefsDataStorage());
         }
 
         private static ITimer CreateTimer(DIContainer container)
