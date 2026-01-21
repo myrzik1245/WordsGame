@@ -1,6 +1,8 @@
+using Assets._Project.Develop.Data.Meta.Player;
 using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Infrastructure.Registration;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
+using Assets._Project.Develop.Utility.DataManagment.Providers;
 using System.Collections;
 using UnityEngine;
 
@@ -25,8 +27,10 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
 
             ConfigsProvider configsProvider = container.Resolve<ConfigsProvider>();
             LoadSceneService loadSceneService = container.Resolve<LoadSceneService>();
-            
+            PlayerDataProvider playerDataProvider = container.Resolve<PlayerDataProvider>();
+
             yield return new WaitForSeconds(2);
+            yield return playerDataProvider.Load();
             yield return configsProvider.LoadAsync();
             yield return loadSceneService.LoadAsync(Scenes.MainMenu);
 

@@ -2,7 +2,7 @@
 {
     public interface IReadOnlySlot
     {
-        public CurrnecyType Type { get; }
+        public CurrencyType Type { get; }
         public IReadOnlyReactiveVariable<int> Amount { get; }
     }
 }

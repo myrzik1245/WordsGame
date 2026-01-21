@@ -1,7 +1,9 @@
 ﻿using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
+using Assets._Project.Develop.Utility.Counters;
 using Assets._Project.Develop.Utility.DataManagment.Keys;
+using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.DataManagment.SaveLoadService;
 using Assets._Project.Develop.Utility.DataManagment.Serializator;
 using Assets._Project.Develop.Utility.DataManagment.Storage;
@@ -15,7 +17,9 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
-            container.Register(CreateWalletService).AsSingle();
+            container.Register(CreateWinLoseCounter).AsSingle().NonLazy();
+            container.Register(CreateWalletService).AsSingle().NonLazy();
+            container.Register(CreatePlayerDataProvider).AsSingle();
             container.Register(CreateSaveLoadService).AsSingle();
             container.Register(CreateTimer);
             container.Register(CreateConfigProvider).AsSingle();
@@ -25,17 +29,32 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateLoadScreen).AsSingle();
             container.Register(CreateResourceLoader).AsSingle();
             container.Register(CreateCoroutinePerformer).AsSingle();
+
+            container.CreateNonLaziesRegistrations();
         }
 
-        private static Wallet CreateWalletService(DIContainer container)
+        private static WinLoseCounter CreateWinLoseCounter(DIContainer container)
         {
-            return new Wallet();
+            return new WinLoseCounter(
+                container.Resolve<PlayerDataProvider>());
+        }
+
+        private static WalletService CreateWalletService(DIContainer container)
+        {
+            return new WalletService(
+                container.Resolve<PlayerDataProvider>());
+        }
+
+        private static PlayerDataProvider CreatePlayerDataProvider(DIContainer container)
+        {
+            return new PlayerDataProvider(
+                container.Resolve<ISaveLoadService>());
         }
 
         private static ISaveLoadService CreateSaveLoadService(DIContainer container)
         {
             return new SaveLoadSerivce(
-                new JsonUtilitySerializator(),
+                new JsonSerializator(),
                 new DataKeys(),
                 new PlayerPrefsDataStorage());
         }

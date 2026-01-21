@@ -9,6 +9,8 @@ namespace Assets._Project.Develop.Infrastructure.Registration
         public static void Register(DIContainer container)
         {
             container.Register(CreateDifficultiesSelector);
+
+            container.CreateNonLaziesRegistrations();
         }
 
         private static IDifficultiesSelector CreateDifficultiesSelector(DIContainer container)

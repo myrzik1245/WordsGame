@@ -31,12 +31,12 @@ namespace Assets._Project.Develop.Utility.DataManagment.SaveLoadService
                 onCompleate?.Invoke(_serializator.Deserialize<T>(dataAsString)));
         }
 
-        public IEnumerator Remove<T>(Action onCompleate) where T : ISaveData
+        public IEnumerator Remove<T>(Action onCompleate = null) where T : ISaveData
         {
             yield return _dataStorage.Remove(_dataKeys.GetKeyByType<T>(), onCompleate);
         }
 
-        public IEnumerator Save<T>(T data, Action onCompleate) where T : ISaveData
+        public IEnumerator Save<T>(T data, Action onCompleate = null) where T : ISaveData
         {
             yield return _dataStorage.Save(_dataKeys.GetKeyByType<T>(), _serializator.Serialize(data), onCompleate);
         }

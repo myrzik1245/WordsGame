@@ -3,5 +3,6 @@
     public interface IRegistrationOptions
     {
         IRegistrationOptions AsSingle();
+        IRegistrationOptions NonLazy();
     }
 }

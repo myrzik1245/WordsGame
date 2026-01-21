@@ -2,6 +2,6 @@
 {
     public interface IReadOnlyWallet
     {
-        IReadOnlySlot GetSlotByType(CurrnecyType type);
+        IReadOnlySlot GetSlotByType(CurrencyType type);
     }
 }

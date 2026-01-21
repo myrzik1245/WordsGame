@@ -6,7 +6,8 @@ namespace Assets._Project.Develop.Infrastructure.DI
     {
         private Func<DIContainer, object> _creator;
         private object _instance;
-        private bool _asSingle = false;
+        public bool IsAsSingle { get; private set; } = false;
+        public bool IsNonLazy { get; private set; } = false;
 
         public Registration(Func<DIContainer, object> creator)
         {
@@ -15,7 +16,7 @@ namespace Assets._Project.Develop.Infrastructure.DI
 
         public object CreateInstance(DIContainer container)
         {
-            if (_instance != null && _asSingle)
+            if (_instance != null && IsAsSingle)
                 return _instance;
 
             if (_creator == null)
@@ -26,9 +27,16 @@ namespace Assets._Project.Develop.Infrastructure.DI
             return _instance;
         }
 
+        public IRegistrationOptions NonLazy()
+        {
+            IsNonLazy = true;
+
+            return this;
+        }
+
         public IRegistrationOptions AsSingle()
         {
-            _asSingle = true;
+            IsAsSingle = true;
 
             return this;
         }

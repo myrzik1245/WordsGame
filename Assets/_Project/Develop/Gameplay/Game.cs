@@ -1,7 +1,11 @@
 using Assets._Project.Develop.Gameplay.Rules;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
+using Assets._Project.Develop.Utility.Counters;
+using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
+using Assets._Project.Develop.Utility.WalletService;
 using System;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Game : IDisposable
 {
@@ -11,6 +15,9 @@ public class Game : IDisposable
     private ICoroutinePerformer _coroutinePerformer;
     private LoadSceneService _loadSceneService;
     private GameplayInputArgs _gameplayInputArgs;
+    private WinLoseCounter _counter;
+    private WalletService _walletService;
+    private PlayerDataProvider _playerDataProvider;
     private bool _gameEnded = false;
 
     public Game(
@@ -19,6 +26,9 @@ public class Game : IDisposable
         Screen loseScreen,
         ICoroutinePerformer coroutinePerformer,
         LoadSceneService loadSceneService,
+        WinLoseCounter counter,
+        WalletService walletService,
+        PlayerDataProvider playerDataProvider,
         GameplayInputArgs gameplayInputArgs)
     {
         _rules = rules;
@@ -26,6 +36,9 @@ public class Game : IDisposable
         _loseScreen = loseScreen;
         _coroutinePerformer = coroutinePerformer;
         _loadSceneService = loadSceneService;
+        _counter = counter;
+        _walletService = walletService;
+        _playerDataProvider = playerDataProvider;
         _gameplayInputArgs = gameplayInputArgs;
 
         _rules.Win += OnWin;
@@ -56,6 +69,8 @@ public class Game : IDisposable
         if (_gameEnded)
             return;
 
+        _counter.AddWin();
+        _walletService.Add(CurrencyType.Coins, 10);
         _winScreen.Show();
         EndGame();
     }
@@ -65,13 +80,20 @@ public class Game : IDisposable
         if (_gameEnded)
             return;
 
+        if (_walletService.CanSpend(CurrencyType.Coins, 20))
+            _walletService.Spend(CurrencyType.Coins, 20);
+
+        _counter.AddLose();
+
         _loseScreen.Show();
+
         EndGame();
     }
 
     private void EndGame()
     {
         _gameEnded = true;
+        _coroutinePerformer.StartPerform(_playerDataProvider.Save());
     }
 
     private void OnChangeSceneRequested(string sceneName)

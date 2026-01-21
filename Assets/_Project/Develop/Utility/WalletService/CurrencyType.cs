@@ -1,6 +1,6 @@
 ﻿namespace Assets._Project.Develop.Utility.WalletService
 {
-    public enum CurrnecyType
+    public enum CurrencyType
     {
         Coins,
     }

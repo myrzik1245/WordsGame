@@ -6,12 +6,12 @@ namespace Assets._Project.Develop.Utility.WalletService
     {
         private ReactiveVariable<int> _amount;
 
-        public Slot(CurrnecyType type, int startAmount)
+        public Slot(CurrencyType type, int startAmount)
         {
             _amount = new ReactiveVariable<int>(startAmount);
         }
 
-        public CurrnecyType Type { get; private set; }
+        public CurrencyType Type { get; private set; }
         public IReadOnlyReactiveVariable<int> Amount => _amount;
 
         public void Add(int amount)

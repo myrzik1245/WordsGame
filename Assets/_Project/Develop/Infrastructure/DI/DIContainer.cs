@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using UnityEngine;
 
 namespace Assets._Project.Develop.Infrastructure.DI
 {
@@ -12,6 +15,13 @@ namespace Assets._Project.Develop.Infrastructure.DI
         public DIContainer(DIContainer parantContainer = null)
         {
             _parantContainer = parantContainer;
+        }
+
+        public void CreateNonLaziesRegistrations()
+        {
+            foreach (Registration registration in _container.Values)
+                if (registration.IsNonLazy)
+                    registration.CreateInstance(this);
         }
 
         public IRegistrationOptions Register<T>(Func<DIContainer, T> creator)
