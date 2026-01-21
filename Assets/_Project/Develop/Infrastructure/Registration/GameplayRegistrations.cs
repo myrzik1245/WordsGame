@@ -1,4 +1,5 @@
-﻿using Assets._Project.Develop.Gameplay.Rules;
+﻿using Assets._Project.Develop.Configs.Meta;
+using Assets._Project.Develop.Gameplay.Rules;
 using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
@@ -25,13 +26,14 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateGameRules).AsSingle();
             container.Register(CreateWaitScreen).AsSingle();
             container.Register(CreateGenerator).AsSingle();
-
-            container.CreateNonLaziesRegistrations();
         }
 
         private static Game CreateGame(DIContainer container)
         {
-             return new Game(
+            ConfigsProvider resourcesLoader = container.Resolve<ConfigsProvider>();
+            WalletConfig walletConfig = resourcesLoader.GetConfig<WalletConfig>();
+
+            return new Game(
                 container.Resolve<IGameRules>(),
                 container.Resolve<WinScreen>(),
                 container.Resolve<LoseScreen>(),
@@ -40,6 +42,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
                 container.Resolve<WinLoseCounter>(),
                 container.Resolve<WalletService>(),
                 container.Resolve<PlayerDataProvider>(),
+                walletConfig,
                 _inputArgs);
         }
 

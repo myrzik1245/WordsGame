@@ -26,12 +26,16 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
             loadScreen.Show();
 
             ConfigsProvider configsProvider = container.Resolve<ConfigsProvider>();
+
+            yield return configsProvider.LoadAsync();
+
+            container.CreateNonLaziesRegistrations();
+
             LoadSceneService loadSceneService = container.Resolve<LoadSceneService>();
             PlayerDataProvider playerDataProvider = container.Resolve<PlayerDataProvider>();
 
             yield return new WaitForSeconds(2);
             yield return playerDataProvider.Load();
-            yield return configsProvider.LoadAsync();
             yield return loadSceneService.LoadAsync(Scenes.MainMenu);
 
             loadScreen.Hide();

@@ -23,7 +23,7 @@ public class ConfigsProvider
     public T GetConfig<T>()
     {
         if (_configs.ContainsKey(typeof(T)) == false)
-            throw new InvalidOperationException($"Not flound config {typeof(T)}");
+            throw new InvalidOperationException($"Not found config {typeof(T)}");
 
         return (T)_configs[typeof(T)];
     }

@@ -3,7 +3,6 @@ using Assets._Project.Develop.Infrastructure.Registration;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
 using System.Collections;
 using System;
-using Assets._Project.Develop.Gameplay.Rules;
 
 namespace Assets._Project.Develop.Infrastructure.EntryPoint
 {
@@ -20,6 +19,8 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
                 throw new ArgumentException($"{nameof(gameplaySceneArgs)} is not {typeof(GameplayInputArgs)}");
 
             GameplayRegistrations.Register(_container, gameplaySceneArgs);
+
+            _container.CreateNonLaziesRegistrations();
 
             _game = container.Resolve<Game>();
 

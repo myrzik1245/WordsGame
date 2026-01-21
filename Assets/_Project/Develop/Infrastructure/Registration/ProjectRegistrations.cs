@@ -1,4 +1,5 @@
-﻿using Assets._Project.Develop.Infrastructure.DI;
+﻿using Assets._Project.Develop.Configs.Meta;
+using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
@@ -29,8 +30,6 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateLoadScreen).AsSingle();
             container.Register(CreateResourceLoader).AsSingle();
             container.Register(CreateCoroutinePerformer).AsSingle();
-
-            container.CreateNonLaziesRegistrations();
         }
 
         private static WinLoseCounter CreateWinLoseCounter(DIContainer container)
@@ -47,8 +46,12 @@ namespace Assets._Project.Develop.Infrastructure.Registration
 
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer container)
         {
+            ConfigsProvider configsProvider = container.Resolve<ConfigsProvider>();
+            WalletConfig walletConfig = configsProvider.GetConfig<WalletConfig>();
+
             return new PlayerDataProvider(
-                container.Resolve<ISaveLoadService>());
+                container.Resolve<ISaveLoadService>(),
+                walletConfig);
         }
 
         private static ISaveLoadService CreateSaveLoadService(DIContainer container)

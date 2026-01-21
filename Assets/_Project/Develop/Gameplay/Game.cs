@@ -1,3 +1,4 @@
+using Assets._Project.Develop.Configs.Meta;
 using Assets._Project.Develop.Gameplay.Rules;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
@@ -5,7 +6,6 @@ using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
 using Assets._Project.Develop.Utility.WalletService;
 using System;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Game : IDisposable
 {
@@ -18,6 +18,7 @@ public class Game : IDisposable
     private WinLoseCounter _counter;
     private WalletService _walletService;
     private PlayerDataProvider _playerDataProvider;
+    private WalletConfig _walletConfig;
     private bool _gameEnded = false;
 
     public Game(
@@ -29,6 +30,7 @@ public class Game : IDisposable
         WinLoseCounter counter,
         WalletService walletService,
         PlayerDataProvider playerDataProvider,
+        WalletConfig walletConfig,
         GameplayInputArgs gameplayInputArgs)
     {
         _rules = rules;
@@ -39,6 +41,7 @@ public class Game : IDisposable
         _counter = counter;
         _walletService = walletService;
         _playerDataProvider = playerDataProvider;
+        _walletConfig = walletConfig;
         _gameplayInputArgs = gameplayInputArgs;
 
         _rules.Win += OnWin;
@@ -70,7 +73,7 @@ public class Game : IDisposable
             return;
 
         _counter.AddWin();
-        _walletService.Add(CurrencyType.Coins, 10);
+        _walletService.Add(CurrencyType.Coins, _walletConfig.GetValueForWinByType(CurrencyType.Coins));
         _winScreen.Show();
         EndGame();
     }
@@ -80,8 +83,11 @@ public class Game : IDisposable
         if (_gameEnded)
             return;
 
-        if (_walletService.CanSpend(CurrencyType.Coins, 20))
-            _walletService.Spend(CurrencyType.Coins, 20);
+        CurrencyType currencyType = CurrencyType.Coins;
+        int amount = _walletConfig.GetValueForWinByType(currencyType);
+
+        if (_walletService.CanSpend(currencyType, amount))
+            _walletService.Spend(currencyType, amount);
 
         _counter.AddLose();
 

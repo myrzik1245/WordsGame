@@ -1,18 +1,21 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "LoadScreenMessages", menuName = "Scriptable Objects/LoadScreenMessages")]
-public class LoadScreenMessages : ScriptableObject
+namespace Assets._Project.Develop.Configs.LoadScreen
 {
-    [SerializeField] private string[] _messages;
-    private int _index = 0;
-
-    public string GetNextMessage()
+    [CreateAssetMenu(fileName = "LoadScreenMessages", menuName = "Scriptable Objects/LoadScreenMessages")]
+    public class LoadScreenMessages : ScriptableObject
     {
-        _index++;
+        [SerializeField] private string[] _messages;
+        private int _index = 0;
 
-        if (_index >= _messages.Length)
-            _index = 0;
+        public string GetNextMessage()
+        {
+            _index++;
 
-        return _messages[_index];
+            if (_index >= _messages.Length)
+                _index = 0;
+
+            return _messages[_index];
+        }
     }
 }

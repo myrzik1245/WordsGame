@@ -1,4 +1,5 @@
-﻿using Assets._Project.Develop.Utility.ResourceLoader;
+﻿using Assets._Project.Develop.Configs.Meta;
+using Assets._Project.Develop.Utility.ResourceLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Assets._Project.Develop.Utility.ConfigsManagment
         {
             { typeof(SymbolsInBehaviors), "Configs/Gameplay/SymbolsInBehavior" },
             { typeof(DifficultiesSettings), "Configs/Gameplay/DifficultiesSettings" },
+            { typeof(WalletConfig), "Configs/Gameplay/WalletConfig" },
         };
 
         public ResourcesConfigLoader(ResourcesLoader resourcesLoader)
