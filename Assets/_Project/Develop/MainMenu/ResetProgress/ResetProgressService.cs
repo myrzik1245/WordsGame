@@ -3,6 +3,7 @@ using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.UpdateService;
 using Assets._Project.Develop.Utility.WalletService;
+using UnityEngine;
 
 namespace Assets._Project.Develop.MainMenu.ResetProgress
 {
@@ -38,6 +39,10 @@ namespace Assets._Project.Develop.MainMenu.ResetProgress
                 {
                     _walletService.Spend(CurrencyType.Coins, spendAmount);
                     _coroutinePerformer.StartPerform(_playerDataProvider.ResetAsync());
+                }
+                else
+                {
+                    Debug.Log("Не хватает монет для сброса");
                 }
             }
         }
