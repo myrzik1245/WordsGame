@@ -20,23 +20,23 @@ namespace Assets._Project.Develop.Utility.DataManagment.SaveLoadService
             _dataStorage = dataStorage;
         }
 
-        public IEnumerator HasData<T>(Action<bool> onCompleate) where T : ISaveData
+        public IEnumerator HasDataAsync<T>(Action<bool> onCompleate) where T : ISaveData
         {
             yield return _dataStorage.HasData(_dataKeys.GetKeyByType<T>(), onCompleate);
         }
 
-        public IEnumerator Load<T>(Action<T> onCompleate) where T : ISaveData
+        public IEnumerator LoadAsync<T>(Action<T> onCompleate) where T : ISaveData
         {
             yield return _dataStorage.Load(_dataKeys.GetKeyByType<T>(), dataAsString =>
                 onCompleate?.Invoke(_serializator.Deserialize<T>(dataAsString)));
         }
 
-        public IEnumerator Remove<T>(Action onCompleate = null) where T : ISaveData
+        public IEnumerator RemoveAsync<T>(Action onCompleate = null) where T : ISaveData
         {
             yield return _dataStorage.Remove(_dataKeys.GetKeyByType<T>(), onCompleate);
         }
 
-        public IEnumerator Save<T>(T data, Action onCompleate = null) where T : ISaveData
+        public IEnumerator SaveAsync<T>(T data, Action onCompleate = null) where T : ISaveData
         {
             yield return _dataStorage.Save(_dataKeys.GetKeyByType<T>(), _serializator.Serialize(data), onCompleate);
         }

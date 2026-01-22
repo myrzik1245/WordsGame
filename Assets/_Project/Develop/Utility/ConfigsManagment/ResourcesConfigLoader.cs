@@ -15,6 +15,7 @@ namespace Assets._Project.Develop.Utility.ConfigsManagment
             { typeof(SymbolsInBehaviors), "Configs/Gameplay/SymbolsInBehavior" },
             { typeof(DifficultiesSettings), "Configs/Gameplay/DifficultiesSettings" },
             { typeof(WalletConfig), "Configs/Gameplay/WalletConfig" },
+            { typeof(ResetProgressConfigs), "Configs/Meta/ResetConfig" }
         };
 
         public ResourcesConfigLoader(ResourcesLoader resourcesLoader)

@@ -1,7 +1,9 @@
 ﻿using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Infrastructure.Registration;
+using Assets._Project.Develop.MainMenu.ResetProgress;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
+using Assets._Project.Develop.Utility.UpdateService;
 using System.Collections;
 using UnityEngine;
 
@@ -21,6 +23,11 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint.SceneEntryPoints
                 container.Resolve<LoadSceneService>(),
                 container.Resolve<ICoroutinePerformer>(),
                 container.Resolve<IDifficultiesSelector>());
+
+            IUpdateService updateService = container.Resolve<IUpdateService>();
+            ResetProgressService resetProgressService = container.Resolve<ResetProgressService>();
+
+            updateService.Add(resetProgressService);
 
             yield break;
         }

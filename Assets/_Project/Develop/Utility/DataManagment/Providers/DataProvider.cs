@@ -35,14 +35,14 @@ namespace Assets._Project.Develop.Utility.DataManagment.Providers
             _writers.Add(writer);
         }
 
-        public IEnumerator Load()
+        public IEnumerator LoadAsync()
         {
             bool hasData = false;
 
-            yield return _saveLoadService.HasData<T>(result => hasData = result);
+            yield return _saveLoadService.HasDataAsync<T>(result => hasData = result);
 
             if (hasData)
-                yield return _saveLoadService.Load<T>(data => _data = data);
+                yield return _saveLoadService.LoadAsync<T>(data => _data = data);
             else
                 _data = GetDefaultData();
 
@@ -50,19 +50,19 @@ namespace Assets._Project.Develop.Utility.DataManagment.Providers
                 reader.Read(_data);
         }
 
-        public IEnumerator Save()
+        public IEnumerator SaveAsync()
         {
             foreach (IDataWriter<T> writer in _writers)
                 writer.Write(_data);
 
-            yield return _saveLoadService.Save(_data);
+            yield return _saveLoadService.SaveAsync(_data);
         }
 
-        public IEnumerator Reset()
+        public IEnumerator ResetAsync()
         {
-            yield return _saveLoadService.Remove<T>();
+            yield return _saveLoadService.RemoveAsync<T>();
 
-            yield return Load();
+            yield return LoadAsync();
         }
 
         protected abstract T GetDefaultData();

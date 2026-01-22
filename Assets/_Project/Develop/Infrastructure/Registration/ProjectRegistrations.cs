@@ -9,6 +9,7 @@ using Assets._Project.Develop.Utility.DataManagment.SaveLoadService;
 using Assets._Project.Develop.Utility.DataManagment.Serializator;
 using Assets._Project.Develop.Utility.DataManagment.Storage;
 using Assets._Project.Develop.Utility.ResourceLoader;
+using Assets._Project.Develop.Utility.UpdateService;
 using Assets._Project.Develop.Utility.WalletService;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
+            container.Register(CreateUpdateService).AsSingle();
             container.Register(CreateWinLoseCounter).AsSingle().NonLazy();
             container.Register(CreateWalletService).AsSingle().NonLazy();
             container.Register(CreatePlayerDataProvider).AsSingle();
@@ -30,6 +32,16 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateLoadScreen).AsSingle();
             container.Register(CreateResourceLoader).AsSingle();
             container.Register(CreateCoroutinePerformer).AsSingle();
+        }
+
+        private static IUpdateService CreateUpdateService(DIContainer container)
+        {
+            ResourcesLoader resourceLoader = container.Resolve<ResourcesLoader>();
+
+            UpdateService prefab = resourceLoader.Load<UpdateService>("Utility/UpdateService");
+            UpdateService inctance = GameObject.Instantiate(prefab);
+
+            return inctance;
         }
 
         private static WinLoseCounter CreateWinLoseCounter(DIContainer container)
@@ -97,8 +109,6 @@ namespace Assets._Project.Develop.Infrastructure.Registration
 
             LoadScreenWithMessage loadScreenPrefab = resourceLoader.Load<LoadScreenWithMessage>("Utility/LoadScreen");
             LoadScreenWithMessage loadScreen = GameObject.Instantiate(loadScreenPrefab);
-
-            ConfigsProvider configsProvider = container.Resolve<ConfigsProvider>();
 
             loadScreen.Initialize(
                 container.Resolve<IInputService>());

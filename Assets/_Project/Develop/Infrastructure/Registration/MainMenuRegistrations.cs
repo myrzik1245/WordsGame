@@ -1,7 +1,11 @@
-﻿using Assets._Project.Develop.Infrastructure.DI;
+﻿using Assets._Project.Develop.Configs.Meta;
+using Assets._Project.Develop.Infrastructure.DI;
+using Assets._Project.Develop.MainMenu.ResetProgress;
 using Assets._Project.Develop.MainMenu.WalletView;
 using Assets._Project.Develop.MainMenu.WinLoseCounterView;
+using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
+using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.ResourceLoader;
 using Assets._Project.Develop.Utility.WalletService;
 using UnityEngine;
@@ -12,9 +16,22 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
+            container.Register(CreateResetProgressService).AsSingle();
             container.Register(CreateConsoleWalletView).AsSingle().NonLazy();
             container.Register(CreateConsoleWinLoseCounterView).AsSingle().NonLazy();
             container.Register(CreateDifficultiesSelector).AsSingle();
+        }
+
+        private static ResetProgressService CreateResetProgressService(DIContainer container)
+        {
+            ConfigsProvider configProvider = container.Resolve<ConfigsProvider>();
+
+            return new ResetProgressService(
+                container.Resolve<WalletService>(),
+                container.Resolve<IInputService>(),
+                container.Resolve<PlayerDataProvider>(),
+                container.Resolve<ICoroutinePerformer>(),
+                configProvider.GetConfig<ResetProgressConfigs>());
         }
 
         private static ConsoleWalletView CreateConsoleWalletView (DIContainer container)

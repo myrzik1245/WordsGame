@@ -99,7 +99,7 @@ public class Game : IDisposable
     private void EndGame()
     {
         _gameEnded = true;
-        _coroutinePerformer.StartPerform(_playerDataProvider.Save());
+        _coroutinePerformer.StartPerform(_playerDataProvider.SaveAsync());
     }
 
     private void OnChangeSceneRequested(string sceneName)

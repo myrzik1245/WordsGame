@@ -35,7 +35,7 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
             PlayerDataProvider playerDataProvider = container.Resolve<PlayerDataProvider>();
 
             yield return new WaitForSeconds(2);
-            yield return playerDataProvider.Load();
+            yield return playerDataProvider.LoadAsync();
             yield return loadSceneService.LoadAsync(Scenes.MainMenu);
 
             loadScreen.Hide();
