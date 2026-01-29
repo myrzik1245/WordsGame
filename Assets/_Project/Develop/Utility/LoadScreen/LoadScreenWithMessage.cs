@@ -1,43 +1,47 @@
 using Assets._Project.Develop.Configs.LoadScreen;
+using Assets._Project.Develop.Utility.InputService;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadScreenWithMessage : MonoBehaviour, ILoadScreen
+namespace Assets._Project.Develop.Utility.LoadScreen
 {
-    [SerializeField] private LoadScreenMessages _messages;
-    [SerializeField] private Image _animationImage;
-    [SerializeField] private float _animationSpeed;
-    [SerializeField] private TMP_Text _messageText;
-
-    private IInputService _inputService;
-
-    public void Initialize(IInputService inputService)
+    public class LoadScreenWithMessage : MonoBehaviour, ILoadScreen
     {
-        Hide();
-        DontDestroyOnLoad(gameObject);
+        [SerializeField] private LoadScreenMessages _messages;
+        [SerializeField] private Image _animationImage;
+        [SerializeField] private float _animationSpeed;
+        [SerializeField] private TMP_Text _messageText;
 
-        _inputService = inputService;
+        private IInputService _inputService;
 
-        _messageText.text = _messages.GetNextMessage();
-    }
+        public void Initialize(IInputService inputService)
+        {
+            Hide();
+            DontDestroyOnLoad(gameObject);
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+            _inputService = inputService;
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    private void Update()
-    {
-        float offser = _animationSpeed * Time.deltaTime;
-
-        _animationImage.rectTransform.Rotate(0, 0, offser);
-        if (_inputService.NextMessage.Down)
             _messageText.text = _messages.GetNextMessage();
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        private void Update()
+        {
+            float offser = _animationSpeed * Time.deltaTime;
+
+            _animationImage.rectTransform.Rotate(0, 0, offser);
+            if (_inputService.NextMessage.Down)
+                _messageText.text = _messages.GetNextMessage();
+        }
     }
 }

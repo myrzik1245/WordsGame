@@ -1,11 +1,23 @@
-﻿using Assets._Project.Develop.Configs.Meta;
+﻿using Assets._Project.Develop.Configs.Gameplay;
+using Assets._Project.Develop.Gameplay;
+using Assets._Project.Develop.Gameplay.Configs.Behavior;
+using Assets._Project.Develop.Gameplay.Configs.Difficulty;
 using Assets._Project.Develop.Gameplay.Rules;
+using Assets._Project.Develop.Gameplay.Screens;
+using Assets._Project.Develop.Gameplay.SequenceSymbolsGenerator;
+using Assets._Project.Develop.Gameplay.SymbolInputReader;
 using Assets._Project.Develop.Infrastructure.DI;
+using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
+using Assets._Project.Develop.Utility.InputService;
+using Assets._Project.Develop.Utility.LoadScreen;
 using Assets._Project.Develop.Utility.ResourceLoader;
+using Assets._Project.Develop.Utility.SceneManagment;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
+using Assets._Project.Develop.Utility.Timer;
+using Assets._Project.Develop.Utility.WaitScreen;
 using Assets._Project.Develop.Utility.WalletService;
 using UnityEngine;
 
@@ -26,12 +38,14 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateGameRules).AsSingle();
             container.Register(CreateWaitScreen).AsSingle();
             container.Register(CreateGenerator).AsSingle();
+
+            container.Initialize();
         }
 
         private static Game CreateGame(DIContainer container)
         {
             ConfigsProvider resourcesLoader = container.Resolve<ConfigsProvider>();
-            WalletConfig walletConfig = resourcesLoader.GetConfig<WalletConfig>();
+            MoneyOnEndGameConfig moneyOnEndGameConfig = resourcesLoader.GetConfig<MoneyOnEndGameConfig>();
 
             return new Game(
                 container.Resolve<IGameRules>(),
@@ -42,7 +56,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
                 container.Resolve<WinLoseCounter>(),
                 container.Resolve<WalletService>(),
                 container.Resolve<PlayerDataProvider>(),
-                walletConfig,
+                moneyOnEndGameConfig,
                 _inputArgs);
         }
 
@@ -92,18 +106,18 @@ namespace Assets._Project.Develop.Infrastructure.Registration
 
             return new GameRules(
                 container.Resolve<ITimer>(),
-                container.Resolve<SequenceSymbolsGenerator>(),
+                container.Resolve<SequenceSymbolsGeneratorService>(),
                 container.Resolve<ISymbolInputReader>(),
                 difficultiesSettings.GetTimeByDifficulty(_inputArgs.Difficulty));
         }
 
-        private static SequenceSymbolsGenerator CreateGenerator(DIContainer container)
+        private static SequenceSymbolsGeneratorService CreateGenerator(DIContainer container)
         {
             ConfigsProvider configsProvider = container.Resolve<ConfigsProvider>();
             SymbolsInBehaviors symbolsInBehaviors = configsProvider.GetConfig<SymbolsInBehaviors>();
             DifficultiesSettings difficultiesSettings = configsProvider.GetConfig<DifficultiesSettings>();
 
-            return new SequenceSymbolsGenerator(
+            return new SequenceSymbolsGeneratorService(
                 symbolsInBehaviors.GetSymbolsByBehavior(_inputArgs.Behavior),
                 difficultiesSettings.GetSymbolsCountByDifficulty(_inputArgs.Difficulty));
         }

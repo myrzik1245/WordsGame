@@ -1,7 +1,9 @@
-
-public interface IKey
+namespace Assets._Project.Develop.Utility.InputService
 {
-    bool Down { get; }
-    bool Pressing { get; }
-    bool Up { get; }
+    public interface IKey
+    {
+        bool Down { get; }
+        bool Pressing { get; }
+        bool Up { get; }
+    }
 }

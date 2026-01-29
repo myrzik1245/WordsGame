@@ -1,19 +1,24 @@
+using Assets._Project.Develop.Utility.InputService;
+using Assets._Project.Develop.Utility.SceneManagment;
 using System;
 
-public class WinScreen : Screen
+namespace Assets._Project.Develop.Gameplay.Screens
 {
-    public override event Action<string> ChangeSceneReauested;
-
-    private IInputService _inputService;
-
-    public void Initialize(IInputService inputService)
+    public class WinScreen : Screen
     {
-        _inputService = inputService;
-    }
+        public override event Action<string> ChangeSceneReauested;
 
-    private void Update()
-    {
-        if (_inputService.Continue.Down)
-            ChangeSceneReauested?.Invoke(Scenes.MainMenu);
+        private IInputService _inputService;
+
+        public void Initialize(IInputService inputService)
+        {
+            _inputService = inputService;
+        }
+
+        private void Update()
+        {
+            if (_inputService.Continue.Down)
+                ChangeSceneReauested?.Invoke(Scenes.MainMenu);
+        }
     }
 }

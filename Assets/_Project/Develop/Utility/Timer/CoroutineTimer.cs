@@ -3,60 +3,63 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class CoroutineTimer : ITimer
+namespace Assets._Project.Develop.Utility.Timer
 {
-    public event Action TimeEnded;
-
-    private float _startTime;
-    private ICoroutinePerformer _coroutinePerformer;
-    private Coroutine _process;
-
-    public CoroutineTimer(ICoroutinePerformer coroutineRunner)
+    public class CoroutineTimer : ITimer
     {
-        _coroutinePerformer = coroutineRunner;
-    }
+        public event Action TimeEnded;
 
-    public float TimeValue { get; private set; }
+        private float _startTime;
+        private ICoroutinePerformer _coroutinePerformer;
+        private Coroutine _process;
 
-    public void Restart()
-    {
-        TimeValue = _startTime;
-
-        Start();
-    }
-
-    public void Start()
-    {
-        if (_process == null)
-            _process = _coroutinePerformer.StartPerform(TimerProcess());
-    }
-
-    public void SetTime(float time)
-    {
-        if (time <= 0)
-            throw new ArgumentOutOfRangeException($"Time <= 0 {nameof(time)}");
-
-        TimeValue = _startTime = time;
-    }
-
-    private IEnumerator TimerProcess()
-    {
-        while (TimeValue >= 0)
+        public CoroutineTimer(ICoroutinePerformer coroutineRunner)
         {
-            TimeValue -= Time.deltaTime;
-            yield return null;
+            _coroutinePerformer = coroutineRunner;
         }
 
-        _process = null;
-        TimeEnded?.Invoke();
-    }
+        public float TimeValue { get; private set; }
 
-    public void Stop()
-    {
-        if (_process != null)
+        public void Restart()
         {
-            _coroutinePerformer.StopPerform(_process);
+            TimeValue = _startTime;
+
+            Start();
+        }
+
+        public void Start()
+        {
+            if (_process == null)
+                _process = _coroutinePerformer.StartPerform(TimerProcess());
+        }
+
+        public void SetTime(float time)
+        {
+            if (time <= 0)
+                throw new ArgumentOutOfRangeException($"Time <= 0 {nameof(time)}");
+
+            TimeValue = _startTime = time;
+        }
+
+        private IEnumerator TimerProcess()
+        {
+            while (TimeValue >= 0)
+            {
+                TimeValue -= Time.deltaTime;
+                yield return null;
+            }
+
             _process = null;
+            TimeEnded?.Invoke();
+        }
+
+        public void Stop()
+        {
+            if (_process != null)
+            {
+                _coroutinePerformer.StopPerform(_process);
+                _process = null;
+            }
         }
     }
 }

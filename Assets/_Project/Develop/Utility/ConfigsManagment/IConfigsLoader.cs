@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 
-public interface IConfigsLoader
+namespace Assets._Project.Develop.Utility.ConfigsManagment
 {
-    IEnumerator LoadAsync(Action<Type, object> onLoad);
+    public interface IConfigsLoader
+    {
+        IEnumerator LoadAsync(Action<Type, object> onLoad);
+    }
 }

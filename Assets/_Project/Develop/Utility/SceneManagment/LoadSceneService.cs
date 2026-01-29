@@ -1,43 +1,50 @@
 using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Infrastructure.EntryPoint;
+using Assets._Project.Develop.Utility.LoadScreen;
 using Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneService
+namespace Assets._Project.Develop.Utility.SceneManagment
 {
-    private ILoadScreen _loadScreen;
-    private DIContainer _projectContainer;
-
-    public LoadSceneService(ILoadScreen loadScreen, DIContainer container)
+    public class LoadSceneService
     {
-        _loadScreen = loadScreen;
-        _projectContainer = container;
-    }
+        private ILoadScreen _loadScreen;
+        private DIContainer _projectContainer;
+        private DIContainer _sceneContainer;
 
-    public IEnumerator LoadAsync(string sceneName, IInputSceneArgs inputSceneArgs = null)
-    {
-        _loadScreen.Show();
+        public LoadSceneService(ILoadScreen loadScreen, DIContainer container)
+        {
+            _loadScreen = loadScreen;
+            _projectContainer = container;
+        }
 
-        AsyncOperation loadEmptySceneOperation = SceneManager.LoadSceneAsync(Scenes.Empty);
-        AsyncOperation loadTargetSceneOperation = SceneManager.LoadSceneAsync(sceneName);
+        public IEnumerator LoadAsync(string sceneName, IInputSceneArgs inputSceneArgs = null)
+        {
+            _loadScreen.Show();
 
-        yield return new WaitWhile(() => loadEmptySceneOperation.isDone == false);
-        yield return new WaitWhile(() => loadTargetSceneOperation.isDone == false);
+            _sceneContainer?.Dispose();
 
-        SceneEntryPoint sceneEntryPoint = GameObject.FindObjectOfType<SceneEntryPoint>();
+            AsyncOperation loadEmptySceneOperation = SceneManager.LoadSceneAsync(Scenes.Empty);
+            AsyncOperation loadTargetSceneOperation = SceneManager.LoadSceneAsync(sceneName);
 
-        if (sceneEntryPoint == null)
-            throw new NullReferenceException($"Scene entry point not found");
+            yield return new WaitWhile(() => loadEmptySceneOperation.isDone == false);
+            yield return new WaitWhile(() => loadTargetSceneOperation.isDone == false);
 
-        DIContainer sceneContainer = new DIContainer(_projectContainer);
+            SceneEntryPoint sceneEntryPoint = UnityEngine.Object.FindObjectOfType<SceneEntryPoint>();
 
-        yield return sceneEntryPoint.Initialize(sceneContainer, inputSceneArgs);
+            if (sceneEntryPoint == null)
+                throw new NullReferenceException($"Scene entry point not found");
 
-        _loadScreen.Hide();
+            _sceneContainer = new DIContainer(_projectContainer);
 
-        yield return sceneEntryPoint.Run();
+            yield return sceneEntryPoint.Initialize(_sceneContainer, inputSceneArgs);
+
+            _loadScreen.Hide();
+
+            yield return sceneEntryPoint.Run();
+        }
     }
 }

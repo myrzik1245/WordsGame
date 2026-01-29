@@ -1,23 +1,27 @@
+using Assets._Project.Develop.Utility.InputService;
 using System;
 using UnityEngine;
 
-public class SymbolInputReader : MonoBehaviour, ISymbolInputReader
+namespace Assets._Project.Develop.Gameplay.SymbolInputReader
 {
-    public event Action<char> CharInputed;
-
-    private IInputService _inputService;
-
-    public void Initialize(IInputService inputService)
+    public class SymbolInputReader : MonoBehaviour, ISymbolInputReader
     {
-        _inputService = inputService;
-    }
+        public event Action<char> CharInputed;
 
-    private void Update()
-    {
-        string inputString = _inputService.InputString;
+        private IInputService _inputService;
 
-        if (string.IsNullOrEmpty(inputString) == false)
-            foreach (char symbol in inputString)
-                CharInputed?.Invoke(symbol);
+        public void Initialize(IInputService inputService)
+        {
+            _inputService = inputService;
+        }
+
+        private void Update()
+        {
+            string inputString = _inputService.InputString;
+
+            if (string.IsNullOrEmpty(inputString) == false)
+                foreach (char symbol in inputString)
+                    CharInputed?.Invoke(symbol);
+        }
     }
 }

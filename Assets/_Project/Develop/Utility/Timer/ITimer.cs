@@ -1,8 +1,10 @@
-
-public interface ITimer : IReadOnlyTimer
+namespace Assets._Project.Develop.Utility.Timer
 {
-    public void SetTime(float time);
-    public void Start();
-    public void Stop();
-    public void Restart();
+    public interface ITimer : IReadOnlyTimer
+    {
+        public void SetTime(float time);
+        public void Start();
+        public void Stop();
+        public void Restart();
+    }
 }

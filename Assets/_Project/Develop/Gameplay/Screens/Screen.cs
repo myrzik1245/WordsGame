@@ -1,22 +1,25 @@
 using System;
 using UnityEngine;
 
-public abstract class Screen : MonoBehaviour
+namespace Assets._Project.Develop.Gameplay.Screens
 {
-    public abstract event Action<string> ChangeSceneReauested;
-
-    private void Awake()
+    public abstract class Screen : MonoBehaviour
     {
-        Hide();
-    }
+        public abstract event Action<string> ChangeSceneReauested;
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        private void Awake()
+        {
+            Hide();
+        }
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace Assets._Project.Develop.Utility.DataManagment
+﻿using Assets._Project.Develop.Data;
+
+namespace Assets._Project.Develop.Utility.DataManagment
 {
-    public interface IDataWriter<T>
+    public interface IDataWriter<TSaveData> where TSaveData : ISaveData
     {
-        void Write(T saveData);
+        void Write(TSaveData saveData);
     }
 }

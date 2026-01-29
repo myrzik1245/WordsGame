@@ -1,6 +1,9 @@
 using System;
 
-public interface ISymbolInputReader
+namespace Assets._Project.Develop.Gameplay.SymbolInputReader
 {
-    event Action<char> CharInputed;
+    public interface ISymbolInputReader
+    {
+        event Action<char> CharInputed;
+    }
 }

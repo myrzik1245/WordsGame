@@ -1,4 +1,7 @@
-﻿namespace Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs
+﻿using Assets._Project.Develop.Gameplay.Configs.Behavior;
+using Assets._Project.Develop.Gameplay.Configs.Difficulty;
+
+namespace Assets._Project.Develop.Utility.SceneManagment.SceneInputArgs
 {
     public class GameplayInputArgs : IInputSceneArgs
     {

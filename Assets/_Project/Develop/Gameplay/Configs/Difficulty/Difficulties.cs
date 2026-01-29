@@ -1,6 +1,9 @@
-public enum Difficulties
+namespace Assets._Project.Develop.Gameplay.Configs.Difficulty
 {
-    Easy,
-    Normal,
-    Hard
+    public enum Difficulties
+    {
+        Easy,
+        Normal,
+        Hard
+    }
 }

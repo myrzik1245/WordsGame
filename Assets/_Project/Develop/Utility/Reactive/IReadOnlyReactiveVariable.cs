@@ -1,9 +1,11 @@
-
 using System;
 
-public interface IReadOnlyReactiveVariable<T>
+namespace Assets._Project.Develop.Utility.Reactive
 {
-    event Action<T> Changed;
+    public interface IReadOnlyReactiveVariable<T>
+    {
+        event Action<T> Changed;
 
-    T Value { get; }
+        T Value { get; }
+    }
 }

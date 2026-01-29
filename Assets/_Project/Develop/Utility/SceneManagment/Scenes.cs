@@ -1,7 +1,10 @@
-public class Scenes
+namespace Assets._Project.Develop.Utility.SceneManagment
 {
-    public const string Empty = "Empty";
-    public const string EntryPoint = "EntryPoint";
-    public const string Gameplay = "Gameplay";
-    public const string MainMenu = "MainMenu";
+    public class Scenes
+    {
+        public const string Empty = "Empty";
+        public const string EntryPoint = "EntryPoint";
+        public const string Gameplay = "Gameplay";
+        public const string MainMenu = "MainMenu";
+    }
 }

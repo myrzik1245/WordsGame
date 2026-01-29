@@ -2,36 +2,39 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DifficultiesSettings", menuName = "Scriptable Objects/DifficultiesSettings")]
-public class DifficultiesSettings : ScriptableObject
+namespace Assets._Project.Develop.Gameplay.Configs.Difficulty
 {
-    [SerializeField] private DifficultySettings[] _difficulties;
-
-    public int GetSymbolsCountByDifficulty(Difficulties difficulty)
+    [CreateAssetMenu(fileName = "DifficultiesSettings", menuName = "Scriptable Objects/DifficultiesSettings")]
+    public class DifficultiesSettings : ScriptableObject
     {
-        return GetSettingsByDifficulty(difficulty).SymbolsCount;
-    }
+        [SerializeField] private DifficultySettings[] _difficulties;
 
-    public float GetTimeByDifficulty(Difficulties difficulty)
-    {
-        return GetSettingsByDifficulty(difficulty).Time;
-    }
+        public int GetSymbolsCountByDifficulty(Difficulties difficulty)
+        {
+            return GetSettingsByDifficulty(difficulty).SymbolsCount;
+        }
 
-    private DifficultySettings GetSettingsByDifficulty(Difficulties difficulty)
-    {
-        DifficultySettings difficultySettings = _difficulties.FirstOrDefault(item => item.Difficulty == difficulty);
+        public float GetTimeByDifficulty(Difficulties difficulty)
+        {
+            return GetSettingsByDifficulty(difficulty).Time;
+        }
 
-        if (difficultySettings == null)
-            throw new NotSupportedException($"{nameof(difficulty)} not supported");
+        private DifficultySettings GetSettingsByDifficulty(Difficulties difficulty)
+        {
+            DifficultySettings difficultySettings = _difficulties.FirstOrDefault(item => item.Difficulty == difficulty);
 
-        return difficultySettings;
-    }
+            if (difficultySettings == null)
+                throw new NotSupportedException($"{nameof(difficulty)} not supported");
 
-    [Serializable]
-    private class DifficultySettings
-    {
-        [field: SerializeField] public Difficulties Difficulty { get; private set; }
-        [field: SerializeField] public int SymbolsCount { get; private set; }
-        [field: SerializeField] public float Time { get; private set; }
+            return difficultySettings;
+        }
+
+        [Serializable]
+        private class DifficultySettings
+        {
+            [field: SerializeField] public Difficulties Difficulty { get; private set; }
+            [field: SerializeField] public int SymbolsCount { get; private set; }
+            [field: SerializeField] public float Time { get; private set; }
+        }
     }
 }

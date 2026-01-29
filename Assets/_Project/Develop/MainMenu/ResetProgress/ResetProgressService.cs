@@ -1,50 +1,28 @@
-using Assets._Project.Develop.Configs.Meta;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
-using Assets._Project.Develop.Utility.UpdateService;
 using Assets._Project.Develop.Utility.WalletService;
-using UnityEngine;
 
 namespace Assets._Project.Develop.MainMenu.ResetProgress
 {
-    public class ResetProgressService : IUpdatable
+    public class ResetProgressService
     {
-        private WalletService _walletService;
-        private IInputService _inputService;
-        private PlayerDataProvider _playerDataProvider;
-        private ICoroutinePerformer _coroutinePerformer;
-        private ResetProgressConfigs _resetProgressConfigs;
+        private readonly WalletService _walletService;
+        private readonly PlayerDataProvider _playerDataProvider;
+        private readonly ICoroutinePerformer _coroutinePerformer;
 
         public ResetProgressService(
             WalletService walletService,
-            IInputService inputService,
             PlayerDataProvider playerDataProvider,
-            ICoroutinePerformer coroutinePerformer,
-            ResetProgressConfigs resetProgressConfigs)
+            ICoroutinePerformer coroutinePerformer)
         {
             _walletService = walletService;
-            _inputService = inputService;
             _playerDataProvider = playerDataProvider;
             _coroutinePerformer = coroutinePerformer;
-            _resetProgressConfigs = resetProgressConfigs;
         }
 
-        public void Update(float deltaTime)
+        public void Reset()
         {
-            if (_inputService.ResetStats.Down)
-            {
-                int spendAmount = _resetProgressConfigs.CoinsForReset;
-
-                if (_walletService.CanSpend(CurrencyType.Coins, spendAmount))
-                {
-                    _walletService.Spend(CurrencyType.Coins, spendAmount);
-                    _coroutinePerformer.StartPerform(_playerDataProvider.ResetAsync());
-                }
-                else
-                {
-                    Debug.Log("Не хватает монет для сброса");
-                }
-            }
+            _coroutinePerformer.StartPerform(_playerDataProvider.ResetAsync());
         }
     }
 }

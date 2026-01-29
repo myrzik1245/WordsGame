@@ -1,14 +1,19 @@
-﻿using System;
+﻿using Assets._Project.Develop.Data.Meta.Player;
+using Assets._Project.Develop.Utility.DataManagment;
+using Assets._Project.Develop.Utility.Reactive;
+using System;
+using System.Linq;
 
 namespace Assets._Project.Develop.Utility.WalletService
 {
-    public class Slot : IReadOnlySlot
+    public class Slot : IReadOnlySlot, IDataWriter<PlayerData>, IDataReader<PlayerData>
     {
         private ReactiveVariable<int> _amount;
 
-        public Slot(CurrencyType type, int startAmount)
+        public Slot(CurrencyType type)
         {
-            _amount = new ReactiveVariable<int>(startAmount);
+            Type = type;
+            _amount = new ReactiveVariable<int>();
         }
 
         public CurrencyType Type { get; private set; }
@@ -36,6 +41,16 @@ namespace Assets._Project.Develop.Utility.WalletService
                 throw new InvalidOperationException("Insufficient funds to spend the requested amount.");
 
             _amount.Value -= amount;
+        }
+
+        public void Write(PlayerData saveData)
+        {
+            saveData.WalletData[Type] = _amount.Value;
+        }
+
+        public void Read(PlayerData saveData)
+        {
+            _amount.Value = saveData.WalletData.First(item => item.Key == Type).Value;
         }
     }
 }

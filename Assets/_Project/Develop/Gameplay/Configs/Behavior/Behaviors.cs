@@ -1,5 +1,8 @@
-public enum Behaviors
+namespace Assets._Project.Develop.Gameplay.Configs.Behavior
 {
-    Numbers,
-    Letters,
+    public enum Behaviors
+    {
+        Numbers,
+        Letters,
+    }
 }

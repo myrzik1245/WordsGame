@@ -1,4 +1,8 @@
-﻿using Assets._Project.Develop.Configs.Meta;
+﻿using Assets._Project.Develop.Configs.Gameplay;
+using Assets._Project.Develop.Configs.Meta;
+using Assets._Project.Develop.Configs.Utility;
+using Assets._Project.Develop.Gameplay.Configs.Behavior;
+using Assets._Project.Develop.Gameplay.Configs.Difficulty;
 using Assets._Project.Develop.Utility.ResourceLoader;
 using System;
 using System.Collections;
@@ -15,7 +19,9 @@ namespace Assets._Project.Develop.Utility.ConfigsManagment
             { typeof(SymbolsInBehaviors), "Configs/Gameplay/SymbolsInBehavior" },
             { typeof(DifficultiesSettings), "Configs/Gameplay/DifficultiesSettings" },
             { typeof(WalletConfig), "Configs/Gameplay/WalletConfig" },
-            { typeof(ResetProgressConfigs), "Configs/Meta/ResetConfig" }
+            { typeof(ShopConfig), "Configs/Meta/ShopConfigs" },
+            { typeof(MoneyOnEndGameConfig), "Configs/Gameplay/MoneyOnEndGameConfig" },
+            { typeof(IconsConfig), "Configs/IconsConfig" },
         };
 
         public ResourcesConfigLoader(ResourcesLoader resourcesLoader)

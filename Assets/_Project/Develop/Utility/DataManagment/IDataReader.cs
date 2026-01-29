@@ -1,7 +1,9 @@
-﻿namespace Assets._Project.Develop.Utility.DataManagment
+﻿using Assets._Project.Develop.Data;
+
+namespace Assets._Project.Develop.Utility.DataManagment
 {
-    public interface IDataReader<T>
+    public interface IDataReader<TSaveData> where TSaveData : ISaveData
     {
-        void Read(T saveData);
+        void Read(TSaveData saveData);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Assets._Project.Develop.Utility.WalletService
+﻿using Assets._Project.Develop.Utility.Reactive;
+
+namespace Assets._Project.Develop.Utility.WalletService
 {
     public interface IReadOnlySlot
     {

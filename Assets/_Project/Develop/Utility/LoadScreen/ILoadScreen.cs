@@ -1,5 +1,8 @@
-public interface ILoadScreen
+namespace Assets._Project.Develop.Utility.LoadScreen
 {
-    void Show();
-    void Hide();
+    public interface ILoadScreen
+    {
+        void Show();
+        void Hide();
+    }
 }

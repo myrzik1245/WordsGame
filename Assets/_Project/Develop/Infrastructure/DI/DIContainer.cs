@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Infrastructure.DI
 {
-    public class DIContainer
+    public class DIContainer : IDisposable
     {
         private readonly Dictionary<Type, Registration> _container = new();
         private readonly List<Type> _requests = new();
@@ -15,13 +12,6 @@ namespace Assets._Project.Develop.Infrastructure.DI
         public DIContainer(DIContainer parantContainer = null)
         {
             _parantContainer = parantContainer;
-        }
-
-        public void CreateNonLaziesRegistrations()
-        {
-            foreach (Registration registration in _container.Values)
-                if (registration.IsNonLazy)
-                    registration.CreateInstance(this);
         }
 
         public IRegistrationOptions Register<T>(Func<DIContainer, T> creator)
@@ -60,6 +50,23 @@ namespace Assets._Project.Develop.Infrastructure.DI
             }
 
             throw new InvalidOperationException($"Registration {typeof(T)} not exists");
+        }
+
+        public void Initialize()
+        {
+            foreach (Registration registration in _container.Values)
+            {
+                if (registration.IsNonLazy)
+                    registration.CreateInstance(this);
+
+                registration.Initialize();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (Registration registration in _container.Values)
+                registration.Dispose();
         }
     }
 }

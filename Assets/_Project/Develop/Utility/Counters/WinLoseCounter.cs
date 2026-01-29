@@ -1,6 +1,7 @@
 using Assets._Project.Develop.Data.Meta.Player;
 using Assets._Project.Develop.Utility.DataManagment;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
+using Assets._Project.Develop.Utility.Reactive;
 
 namespace Assets._Project.Develop.Utility.Counters
 {
@@ -15,8 +16,8 @@ namespace Assets._Project.Develop.Utility.Counters
             playerDataProvider.RegisterReader(this);
         }
 
-        public int WinCount => _winCounter.Count;
-        public int LoseCount => _loseCounter.Count;
+        public IReadOnlyReactiveVariable<int> WinCount => _winCounter.Count;
+        public IReadOnlyReactiveVariable<int> LoseCount => _loseCounter.Count;
 
         public void AddWin()
         {
@@ -30,8 +31,8 @@ namespace Assets._Project.Develop.Utility.Counters
 
         public void Write(PlayerData saveData)
         {
-            saveData.WinCounter = _winCounter.Count;
-            saveData.LoseCounter = _loseCounter.Count;
+            saveData.WinCounter = _winCounter.Count.Value;
+            saveData.LoseCounter = _loseCounter.Count.Value;
         }
 
         public void Read(PlayerData saveData)

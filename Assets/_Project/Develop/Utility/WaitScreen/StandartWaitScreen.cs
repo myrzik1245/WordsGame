@@ -1,40 +1,45 @@
+using Assets._Project.Develop.Utility.InputService;
+using Assets._Project.Develop.Utility.LoadScreen;
 using System.Collections;
 using UnityEngine;
 
-public class StandartWaitScreen : MonoBehaviour, IWaitScreen
+namespace Assets._Project.Develop.Utility.WaitScreen
 {
-    private IInputService _inputService;
-    private ILoadScreen _loadScreen;
-
-    private void Awake()
+    public class StandartWaitScreen : MonoBehaviour, IWaitScreen
     {
-        Hide();
-        DontDestroyOnLoad(this);
-    }
+        private IInputService _inputService;
+        private ILoadScreen _loadScreen;
 
-    public void Initialize(IInputService inputService, ILoadScreen loadScreen)
-    {
-        _inputService = inputService;
-        _loadScreen = loadScreen;
-    }
+        private void Awake()
+        {
+            Hide();
+            DontDestroyOnLoad(this);
+        }
 
-    public IEnumerator Wait()
-    {
-        Show();
+        public void Initialize(IInputService inputService, ILoadScreen loadScreen)
+        {
+            _inputService = inputService;
+            _loadScreen = loadScreen;
+        }
 
-        yield return new WaitWhile(() => _inputService.AnyKey == false);
+        public IEnumerator Wait()
+        {
+            Show();
 
-        Hide();
-    }
+            yield return new WaitWhile(() => _inputService.AnyKey == false);
 
-    private void Show()
-    {
-        gameObject.SetActive(true);
-        _loadScreen.Hide();
-    }
+            Hide();
+        }
 
-    private void Hide()
-    {
-        gameObject.SetActive(false);
+        private void Show()
+        {
+            gameObject.SetActive(true);
+            _loadScreen.Hide();
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

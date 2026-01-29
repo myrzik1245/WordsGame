@@ -3,5 +3,6 @@
     public interface IReadOnlyWallet
     {
         IReadOnlySlot GetSlotByType(CurrencyType type);
+        IReadOnlySlot[] GetSlots();
     }
 }

@@ -1,14 +1,16 @@
+using Assets._Project.Develop.Utility.Reactive;
 using System;
 
 namespace Assets._Project.Develop.Utility.Counters
 {
     public class Counter
     {
-        public int Count { get; private set; }
+        private ReactiveVariable<int> _count = new ReactiveVariable<int>();
+        public IReadOnlyReactiveVariable<int> Count => _count;
 
         public void Add()
         {
-            Count++;
+            _count.Value++;
         }
 
         public void SetCount(int count)
@@ -16,7 +18,7 @@ namespace Assets._Project.Develop.Utility.Counters
             if (count < 0)
                 throw new ArgumentOutOfRangeException();
 
-            Count = count;
+            _count.Value = count;
         }
     }
 }

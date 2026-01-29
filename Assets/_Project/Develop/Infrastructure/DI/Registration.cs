@@ -14,6 +14,20 @@ namespace Assets._Project.Develop.Infrastructure.DI
             _creator = creator;
         }
 
+        public void Initialize()
+        {
+            if (_instance != null)
+                if (_instance is IInitializable initializable)
+                    initializable.Initialize();
+        }
+
+        public void Dispose()
+        {
+            if (_instance != null)
+                if (_instance is IDisposable disposable)
+                    disposable.Dispose();
+        }
+
         public object CreateInstance(DIContainer container)
         {
             if (_instance != null && IsAsSingle)

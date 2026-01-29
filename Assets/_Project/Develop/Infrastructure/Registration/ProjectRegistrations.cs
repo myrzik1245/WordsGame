@@ -1,5 +1,6 @@
 ﻿using Assets._Project.Develop.Configs.Meta;
 using Assets._Project.Develop.Infrastructure.DI;
+using Assets._Project.Develop.UI.Factories;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
@@ -8,7 +9,12 @@ using Assets._Project.Develop.Utility.DataManagment.Providers;
 using Assets._Project.Develop.Utility.DataManagment.SaveLoadService;
 using Assets._Project.Develop.Utility.DataManagment.Serializator;
 using Assets._Project.Develop.Utility.DataManagment.Storage;
+using Assets._Project.Develop.Utility.InputService;
+using Assets._Project.Develop.Utility.InputService.KeyboardInputService;
+using Assets._Project.Develop.Utility.LoadScreen;
 using Assets._Project.Develop.Utility.ResourceLoader;
+using Assets._Project.Develop.Utility.SceneManagment;
+using Assets._Project.Develop.Utility.Timer;
 using Assets._Project.Develop.Utility.UpdateService;
 using Assets._Project.Develop.Utility.WalletService;
 using UnityEngine;
@@ -19,6 +25,8 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
+            container.Register(CreateViewsFactory).AsSingle();
+            container.Register(CreateProjectPresentersFactory).AsSingle();
             container.Register(CreateUpdateService).AsSingle();
             container.Register(CreateWinLoseCounter).AsSingle().NonLazy();
             container.Register(CreateWalletService).AsSingle().NonLazy();
@@ -32,6 +40,17 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateLoadScreen).AsSingle();
             container.Register(CreateResourceLoader).AsSingle();
             container.Register(CreateCoroutinePerformer).AsSingle();
+        }
+
+        private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer container)
+        {
+            return new ProjectPresentersFactory();
+        }
+
+        private static ViewsFactory CreateViewsFactory(DIContainer container)
+        {
+            return new ViewsFactory(
+                container.Resolve<ResourcesLoader>());
         }
 
         private static IUpdateService CreateUpdateService(DIContainer container)

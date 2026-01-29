@@ -1,8 +1,11 @@
 using Assets._Project.Develop.Data.Meta.Player;
 using Assets._Project.Develop.Infrastructure.DI;
 using Assets._Project.Develop.Infrastructure.Registration;
+using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
+using Assets._Project.Develop.Utility.LoadScreen;
+using Assets._Project.Develop.Utility.SceneManagment;
 using System.Collections;
 using UnityEngine;
 
@@ -29,7 +32,7 @@ namespace Assets._Project.Develop.Infrastructure.EntryPoint
 
             yield return configsProvider.LoadAsync();
 
-            container.CreateNonLaziesRegistrations();
+            container.Initialize();
 
             LoadSceneService loadSceneService = container.Resolve<LoadSceneService>();
             PlayerDataProvider playerDataProvider = container.Resolve<PlayerDataProvider>();

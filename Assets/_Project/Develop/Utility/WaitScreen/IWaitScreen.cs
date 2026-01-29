@@ -1,7 +1,9 @@
 using System.Collections;
-using UnityEngine;
 
-public interface IWaitScreen
+namespace Assets._Project.Develop.Utility.WaitScreen
 {
-    public IEnumerator Wait();
+    public interface IWaitScreen
+    {
+        public IEnumerator Wait();
+    }
 }
