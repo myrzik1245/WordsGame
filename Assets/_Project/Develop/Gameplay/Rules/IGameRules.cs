@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets._Project.Develop.Utility.Reactive;
+using System;
 
 namespace Assets._Project.Develop.Gameplay.Rules
 {
@@ -6,6 +7,8 @@ namespace Assets._Project.Develop.Gameplay.Rules
     {
         event Action Win;
         event Action Lose;
+
+        public IReadOnlyReactiveVariable<string> GeneratedMessage { get; }
 
         public void Start();
     }

@@ -7,6 +7,9 @@ using Assets._Project.Develop.Gameplay.Screens;
 using Assets._Project.Develop.Gameplay.SequenceSymbolsGenerator;
 using Assets._Project.Develop.Gameplay.SymbolInputReader;
 using Assets._Project.Develop.Infrastructure.DI;
+using Assets._Project.Develop.UI.Factories;
+using Assets._Project.Develop.UI.MainMenu;
+using Assets._Project.Develop.UI.Root;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.Counters;
@@ -38,8 +41,36 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateGameRules).AsSingle();
             container.Register(CreateWaitScreen).AsSingle();
             container.Register(CreateGenerator).AsSingle();
+            container.Register(CreateUIRoot).AsSingle().NonLazy();
+            container.Register(CreateGameplayPresentersFactory).AsSingle();
+            container.Register(CreateGameplayScreen).AsSingle().NonLazy();
 
             container.Initialize();
+        }
+
+        private static GameplayPresenter CreateGameplayScreen(DIContainer container)
+        {
+            UIRoot uiRoot = container.Resolve<UIRoot>();
+            ViewsFactory viewsFactory = container.Resolve<ViewsFactory>();
+            GameplayPresentersFactory presentersFactory = container.Resolve<GameplayPresentersFactory>();
+
+            GameplayView view = viewsFactory.Create<GameplayView>(ViewIDs.GameplayView, uiRoot.Hud);
+            GameplayPresenter presenter = presentersFactory.CreateGameplayPresenter(view);
+
+            return presenter;
+        }
+
+        private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer container)
+        {
+            return new GameplayPresentersFactory(container);
+        }
+
+        private static UIRoot CreateUIRoot(DIContainer container)
+        {
+            ResourcesLoader resourcesLoader = container.Resolve<ResourcesLoader>();
+            UIRoot prefab = resourcesLoader.Load<UIRoot>("UI/Root/UIRoot");
+
+            return GameObject.Instantiate(prefab);
         }
 
         private static Game CreateGame(DIContainer container)

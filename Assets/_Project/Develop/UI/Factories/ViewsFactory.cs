@@ -11,8 +11,10 @@ namespace Assets._Project.Develop.UI.Factories
 
         private readonly Dictionary<string, string> _viewsPaths = new()
         {
-            { ViewIDs.Currency, "UI/Wallet/CurrencyView" },
-            { ViewIDs.MainMenuView, "UI/MainMenuView" },
+            { ViewIDs.Currency, "UI/MainMenu/Wallet/CurrencyView" },
+            { ViewIDs.MainMenuView, "UI/MainMenu/MainMenuView" },
+            { ViewIDs.GameplayView, "UI/Gameplay/GameplayView" },
+            { ViewIDs.ConfirmPopup, "UI/Popups/ConfirmPopup" },
         };
 
         public ViewsFactory(ResourcesLoader resourcesLoader)
@@ -35,7 +37,7 @@ namespace Assets._Project.Develop.UI.Factories
 
         public void Disable<TView>(TView view) where TView : MonoBehaviour, IView
         {
-            GameObject.Destroy(view);
+            GameObject.Destroy(view.gameObject);
         }
     }
 }

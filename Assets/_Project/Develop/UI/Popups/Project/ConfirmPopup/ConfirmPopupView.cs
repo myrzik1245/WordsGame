@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.UI.Popups
 {
-    public class ConfirmPopupView : MonoBehaviour
+    public class ConfirmPopupView : PopupViewBase
     {
-        public event Action Confirmed;
-        public event Action Canceled;
+        public event Action ConfirmedRequest;
 
         [SerializeField] private TMP_Text _messageText;
 
@@ -16,14 +15,9 @@ namespace Assets._Project.Develop.UI.Popups
             _messageText.text = message;
         }
 
-        public void Confirm()
+        public void OnConfirmButtonClicked()
         {
-            Confirmed?.Invoke();
-        }
-
-        public void Cancel()
-        {
-            Canceled?.Invoke();
+            ConfirmedRequest?.Invoke();
         }
     }
 }

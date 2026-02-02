@@ -1,8 +1,8 @@
 using Assets._Project.Develop.Gameplay.SequenceSymbolsGenerator;
 using Assets._Project.Develop.Gameplay.SymbolInputReader;
+using Assets._Project.Develop.Utility.Reactive;
 using Assets._Project.Develop.Utility.Timer;
 using System;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Gameplay.Rules
 {
@@ -15,7 +15,8 @@ namespace Assets._Project.Develop.Gameplay.Rules
         private SequenceSymbolsGeneratorService _symbolsGenerator;
         private ISymbolInputReader _inputReader;
 
-        private string _generatedMessage;
+        private ReactiveVariable<string> _generatedMessage = new ReactiveVariable<string>(string.Empty);
+
         private int _index = 0;
         private bool _isActive = false;
 
@@ -35,13 +36,13 @@ namespace Assets._Project.Develop.Gameplay.Rules
             _timer.SetTime(timeToLose);
         }
 
+        public IReadOnlyReactiveVariable<string> GeneratedMessage => _generatedMessage;
+
         public void Start()
         {
             _timer.Start();
 
-            _generatedMessage = _symbolsGenerator.Generate();
-
-            Debug.Log(_generatedMessage);
+            _generatedMessage.Value = _symbolsGenerator.Generate();
 
             _isActive = true;
         }
@@ -62,14 +63,14 @@ namespace Assets._Project.Develop.Gameplay.Rules
             if (_isActive == false)
                 return;
 
-            if (_index >= _generatedMessage.Length)
+            if (_index >= _generatedMessage.Value.Length)
                 return;
 
-            if (inputSymbol == _generatedMessage[_index])
+            if (inputSymbol == _generatedMessage.Value[_index])
             {
                 _index++;
 
-                if (_index >= _generatedMessage.Length)
+                if (_index >= _generatedMessage.Value.Length)
                     Win?.Invoke();
             }
             else

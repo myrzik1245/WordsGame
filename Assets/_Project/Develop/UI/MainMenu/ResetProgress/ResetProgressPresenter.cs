@@ -1,6 +1,7 @@
 ﻿using Assets._Project.Develop.Configs.Meta;
 using Assets._Project.Develop.MainMenu.ResetProgress;
 using Assets._Project.Develop.UI.Factories;
+using Assets._Project.Develop.UI.Popups.Project;
 using Assets._Project.Develop.Utility.WalletService;
 
 namespace Assets._Project.Develop.UI.MainMenu.ResetProgress
@@ -10,17 +11,20 @@ namespace Assets._Project.Develop.UI.MainMenu.ResetProgress
         private readonly ResetProgressView _view;
         private readonly ResetProgressService _resetService;
         private readonly WalletService _walletService;
+        private readonly MainMenuPopupService _mainMenuPopupService;
         private readonly ShopConfig _shopConfig;
 
         public ResetProgressPresenter(
             ResetProgressView view,
             ResetProgressService resetService,
             WalletService walletService,
+            MainMenuPopupService mainMenuPopupService,
             ShopConfig shopConfig)
         {
             _view = view;
             _resetService = resetService;
             _walletService = walletService;
+            _mainMenuPopupService = mainMenuPopupService;
             _shopConfig = shopConfig;
         }
 
@@ -44,11 +48,13 @@ namespace Assets._Project.Develop.UI.MainMenu.ResetProgress
         private void OnResetButtonClicked()
         {
             int spendAmount = _shopConfig.CoinsForReset;
-
             if (_walletService.CanSpend(CurrencyType.Coins, spendAmount))
             {
-                _walletService.Spend(CurrencyType.Coins, spendAmount);
-                _resetService.Reset();
+                _mainMenuPopupService.CreateConfirmPopup("Reset progress?", () =>
+                {
+                    _walletService.Spend(CurrencyType.Coins, spendAmount);
+                    _resetService.Reset();
+                });
             }
         }
     }

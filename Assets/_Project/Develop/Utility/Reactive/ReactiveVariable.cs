@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Utility.Reactive
 {
@@ -24,10 +23,7 @@ namespace Assets._Project.Develop.Utility.Reactive
                 _value = value;
 
                 if (_value.Equals(oldValue) == false)
-                {
-                    Debug.Log($"ReactiveVariable {_value}");
                     Changed?.Invoke(_value);
-                }
             }
         }
     }

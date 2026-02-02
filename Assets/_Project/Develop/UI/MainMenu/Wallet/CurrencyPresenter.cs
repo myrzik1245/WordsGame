@@ -30,13 +30,10 @@ namespace Assets._Project.Develop.UI.Wallet
         public void Dispose()
         {
             _walletSlot.Amount.Changed -= UpdateAmount;
-            Debug.Log("Dispose");
         }
 
         private void UpdateAmount(int amount)
         {
-            Debug.Log($"UpdateAmount {amount}");
-
             _currencyView.SetText(amount.ToString());
         }
     }

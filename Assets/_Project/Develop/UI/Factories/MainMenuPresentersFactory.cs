@@ -10,6 +10,7 @@ using Assets._Project.Develop.UI.CounterView;
 using Assets._Project.Develop.UI.DifficultiesSelector;
 using Assets._Project.Develop.UI.MainMenu;
 using Assets._Project.Develop.UI.MainMenu.ResetProgress;
+using Assets._Project.Develop.UI.Popups.Project;
 using Assets._Project.Develop.UI.Wallet;
 using Assets._Project.Develop.Utility.ConfigsManagment;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
@@ -35,6 +36,7 @@ namespace Assets._Project.Develop.UI.Factories
                 view,
                 _container.Resolve<ResetProgressService>(),
                 _container.Resolve<WalletService>(),
+                _container.Resolve<MainMenuPopupService>(),
                 _container.Resolve<ConfigsProvider>().GetConfig<ShopConfig>());
         }
 

@@ -5,6 +5,7 @@ using Assets._Project.Develop.MainMenu.ResetProgress;
 using Assets._Project.Develop.MainMenu.Selectors;
 using Assets._Project.Develop.UI.Factories;
 using Assets._Project.Develop.UI.MainMenu;
+using Assets._Project.Develop.UI.Popups.Project;
 using Assets._Project.Develop.UI.Root;
 using Assets._Project.Develop.Utility.CoroutinePerformer;
 using Assets._Project.Develop.Utility.DataManagment.Providers;
@@ -18,6 +19,7 @@ namespace Assets._Project.Develop.Infrastructure.Registration
     {
         public static void Register(DIContainer container)
         {
+            container.Register(CreatePopupService).AsSingle();
             container.Register(CreateResetProgressService).AsSingle();
             container.Register(CreateDifficultiesSelector).AsSingle();
             container.Register(CreateBehavioursSelector).AsSingle();
@@ -26,6 +28,14 @@ namespace Assets._Project.Develop.Infrastructure.Registration
             container.Register(CreateUIRoot).AsSingle().NonLazy();
 
             container.Initialize();
+        }
+
+        private static MainMenuPopupService CreatePopupService(DIContainer container)
+        {
+            return new MainMenuPopupService(
+                container.Resolve<ProjectPresentersFactory>(),
+                container.Resolve<ViewsFactory>(),
+                container.Resolve<UIRoot>().Popups);
         }
 
         private static ResetProgressService CreateResetProgressService(DIContainer container)
